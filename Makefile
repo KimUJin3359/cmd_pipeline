@@ -21,10 +21,10 @@ $(NAME) : $(OBJS)
 	$(CC) -o $(NAME) $(OBJS)
 
 clean :
-	rm ./srcs/*.o
+	rm -rf ./srcs/*.o
 
 fclean : clean
-	rm $(NAME)
+	rm -rf $(NAME)
 
 re : fclean all
 

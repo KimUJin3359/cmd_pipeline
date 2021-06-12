@@ -1,55 +1,43 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_main.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: woojikim <woojikim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/12 21:46:05 by woojikim          #+#    #+#             */
+/*   Updated: 2021/06/12 21:52:52 by woojikim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_h.h"
 #include <unistd.h>
 #include <sys/wait.h>
 #include <stdio.h>
 
-void	exit_program(const char *msg)
+int		main(int ac, char *av[])
 {
-	perror(msg);
-	exit(1);
-}
-
-int	main(int ac, char *av[])
-{
-	int	pipe_fd[2];
-	int	res;
-	pid_t	pid;
 	t_cmd	cmd;
+	int		pipe_fd[2];
+	int		status;
+	pid_t	pid;
 
-	if (ac != 5)
-		exit(0);
-	res = pipe(pipe_fd);
-	if (res < 0)
-		exit_program("pipe error");
-	pid = fork();
-	if (pid < 0)
-		exit_program("fork error");	
+	if (ac != 5 || pipe(pipe_fd) < 0 || (pid = fork()) < 0)
+		exit(1);
 	if (pid > 0)
 	{
-		int	status;
-		char	buf[128];
-
-		res = waitpid(pid, &status, 0);
+		if (waitpid(pid, &status, 0) == -1)
+			exit(1);
 		if (!WIFEXITED(status))
-			exit_program("fork child error");
-		if (res == -1)
-			exit_program("waitpid error");
-		res = redirect_output(av[4]);
-		if (res)
-			exit_program("redirect output error");
-		res = connect_pipe(pipe_fd, STDIN_FILENO);
-		if (res)
-			exit_program("connect pipe error");
+			exit(1);
+		if (redirect_output(av[4]) || connect_pipe(pipe_fd, STDIN_FILENO))
+			exit(1);
 		run_cmd(&cmd, av[3]);
 	}
 	else if (pid == 0)
 	{
-		res = redirect_input(av[1]);
-		if (res)
-			exit_program("redirect input error");
-		res = connect_pipe(pipe_fd, STDOUT_FILENO);
-		if (res)
-			exit_program("connect pipe error");
+		if (redirect_input(av[1]) || connect_pipe(pipe_fd, STDOUT_FILENO))
+			exit(1);
 		run_cmd(&cmd, av[2]);
 	}
 	return (0);

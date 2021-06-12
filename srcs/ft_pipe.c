@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_pipe.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: woojikim <woojikim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/12 21:49:41 by woojikim          #+#    #+#             */
+/*   Updated: 2021/06/12 21:55:55 by woojikim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_h.h"
 #include <string.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdio.h>
 
-int	redirect_input(const char *file)
+int		redirect_input(const char *file)
 {
 	int fd;
 	int res;
@@ -22,7 +34,7 @@ int	redirect_input(const char *file)
 	return (0);
 }
 
-int	redirect_output(const char *file)
+int		redirect_output(const char *file)
 {
 	int fd;
 	int res;
@@ -40,7 +52,7 @@ int	redirect_output(const char *file)
 	return (0);
 }
 
-int	connect_pipe(int pipe_fd[2], int stdio)
+int		connect_pipe(int pipe_fd[2], int stdio)
 {
 	int res;
 
@@ -74,5 +86,5 @@ void	run_cmd(t_cmd *cmd, const char *argv)
 	split_cmd(cmd, argv);
 	while (i < 5)
 		execve(cmd->file[i++], cmd->argv, cmd->envp);
-	perror(cmd->file[0]);
+	perror(argv);
 }
