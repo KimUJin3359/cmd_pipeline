@@ -46,3 +46,17 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	dst[i + j] = '\0';
 	return (dst);
 }
+
+char	*ft_strdup(char *str)
+{
+	int		i;
+	char	*res;
+
+	i = -1;
+	if (!(res = (char *)malloc(sizeof(char) + 1)))
+		return (NULL);
+	while (str[++i])
+		res[i] = str[i];
+	res[i] = '\0';
+	return (res);
+}

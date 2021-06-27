@@ -24,7 +24,7 @@ int		redirect_input(const char *file)
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 	{
-		perror(file);
+		print_error(0, file);
 		return (1);
 	}
 	res = dup2(fd, STDIN_FILENO);
@@ -42,7 +42,7 @@ int		redirect_output(const char *file)
 	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	if (fd < 0)
 	{
-		perror(file);
+		print_error(0, file);
 		return (1);
 	}
 	res = dup2(fd, STDOUT_FILENO);
@@ -69,6 +69,7 @@ void	split_cmd(t_cmd *cmd, const char *argv)
 	char **word;
 
 	word = ft_split(argv, ' ');
+	cmd->cmd = ft_strdup(word[0]);
 	cmd->file[0] = ft_strjoin("/bin/", word[0]);
 	cmd->file[1] = ft_strjoin("/usr/bin/", word[0]);
 	cmd->file[2] = ft_strjoin("/usr/local/bin/", word[0]);
@@ -80,11 +81,18 @@ void	split_cmd(t_cmd *cmd, const char *argv)
 
 void	run_cmd(t_cmd *cmd, const char *argv)
 {
-	int i;
+	int		i;
 
 	i = 0;
 	split_cmd(cmd, argv);
 	while (i < 5)
 		execve(cmd->file[i++], cmd->argv, cmd->envp);
-	perror(argv);
+	i = 0;
+	while (i < 5)
+		free(cmd->file[i++]);
+	i = 0;
+	while (cmd->argv[i])
+		free(cmd->argv[i]);
+	free((void *)cmd->argv);
+	print_error(1, cmd->cmd);
 }

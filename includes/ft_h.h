@@ -17,6 +17,7 @@
 
 typedef	struct		s_cmd
 {
+	char			*cmd;
 	char			*file[5];
 	char *const		*argv;
 	char *const		*envp;
@@ -25,11 +26,14 @@ typedef	struct		s_cmd
 size_t				ft_strlen(const char *str);
 char				**ft_split(char const *s, char c);
 char				*ft_strjoin(char const *s1, char const *s2);
+char				*ft_strdup(char *str);
 
 int					redirect_input(const char *file);
 int					redirect_output(const char *file);
 int					connect_pipe(int pipe_fd[2], int stdio);
 void				split_cmd(t_cmd *cmd, const char *argv);
 void				run_cmd(t_cmd *cmd, const char *argv);
+
+void				print_error(int err, const char *name);
 
 #endif
