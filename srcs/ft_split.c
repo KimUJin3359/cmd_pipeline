@@ -97,6 +97,8 @@ char		**ft_split(char const *s, char c)
 	char	**word;
 	int		w_size;
 
+	if (!ft_strlen(s))
+		return (NULL);
 	w_size = ft_word_size(s, c);
 	if (!(word = (char **)malloc(sizeof(char *) * (w_size + 1))))
 		return (NULL);

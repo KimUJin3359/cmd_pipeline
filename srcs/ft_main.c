@@ -70,15 +70,15 @@ void	print_error(int err, const char *name)
 		err_msg = to_lower(err_msg);
 		write(2, err_msg, ft_strlen(err_msg));
 		write(2, ": ", 2);
-		free(err_msg);
 		write(2, name, ft_strlen(name));
 	}
 	else if (err == 1)
 	{
 		write(2, "zsh: command not found: ", 24);
 		write(2, name, ft_strlen(name));
-		free((void *)name);
 	}
+	else if (err == 2)
+		write(2, "zsh: permission denied:", 23);
 	else
 		write(2, "usage: ./pipex file1 cmd1 cmd2 file2", 36);
 	write(2, "\n", 1);

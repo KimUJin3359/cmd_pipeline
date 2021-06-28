@@ -69,6 +69,10 @@ void	split_cmd(t_cmd *cmd, const char *argv)
 	char **word;
 
 	word = ft_split(argv, ' ');
+	if (!word)
+		print_error(2, NULL);
+	else if (!word[0])
+		print_error(1, "");
 	cmd->cmd = ft_strdup(word[0]);
 	cmd->file[0] = ft_strjoin("/bin/", word[0]);
 	cmd->file[1] = ft_strjoin("/usr/bin/", word[0]);
