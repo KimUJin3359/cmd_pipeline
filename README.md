@@ -1,10 +1,20 @@
 # my_pipe_cmd
 
+## Unix mechanism
+
+### To Run
+```
+git clone https://github.com/KimUJin3359/my_pipe_cmd.git
+cd my_pipe_cmd
+make
+./pipex file1 cmd1 cmd2 file2
+```
+
 ### Project
 ```
 ./pipex file1 cmd1 cmd2 file2
 ```
-- this program behavior likes below command.
+- this execution behave same as below command.
 
 ```
 < file1 cmd1 | cmd2 > file2
