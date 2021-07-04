@@ -79,12 +79,5 @@ void	run_cmd(t_cmd *cmd, const char *argv)
 	split_cmd(cmd, argv);
 	while (i < 5)
 		execve(cmd->file[i++], cmd->argv, cmd->envp);
-	i = 0;
-	while (i < 5)
-		free(cmd->file[i++]);
-	i = 0;
-	while (cmd->argv[i])
-		free(cmd->argv[i]);
-	free((void *)cmd->argv);
 	print_error(1, cmd->cmd);
 }
