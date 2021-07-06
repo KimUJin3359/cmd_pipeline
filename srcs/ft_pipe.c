@@ -54,19 +54,27 @@ int		connect_pipe(int pipe_fd[2], int stdio)
 
 void	split_cmd(t_cmd *cmd, const char *argv)
 {
-	char **word;
+	int		i;
+	char	*tmp;
+	char	**word;
 
+	i = 0;
 	word = ft_split(argv, ' ');
 	if (!word)
 		print_error(2, NULL);
 	else if (!word[0])
 		print_error(1, "");
+	while (cmd->file[i])
+	{
+		tmp = ft_strjoin(cmd->file[i], "/");
+		free(cmd->file[i]);
+		cmd->file[i] = tmp;
+		tmp = ft_strjoin(cmd->file[i], word[0]);
+		free(cmd->file[i]);
+		cmd->file[i] = tmp;
+		i++;
+	}
 	cmd->cmd = ft_strdup(word[0]);
-	cmd->file[0] = ft_strjoin("/bin/", word[0]);
-	cmd->file[1] = ft_strjoin("/usr/bin/", word[0]);
-	cmd->file[2] = ft_strjoin("/usr/local/bin/", word[0]);
-	cmd->file[3] = ft_strjoin("/sbin/", word[0]);
-	cmd->file[4] = ft_strjoin("/usr/sbin/", word[0]);
 	cmd->argv = (char *const *)word;
 	cmd->envp = NULL;
 }
@@ -77,7 +85,7 @@ void	run_cmd(t_cmd *cmd, const char *argv)
 
 	i = 0;
 	split_cmd(cmd, argv);
-	while (i < 5)
+	while (cmd->file[i])
 		execve(cmd->file[i++], cmd->argv, cmd->envp);
 	print_error(1, cmd->cmd);
 }

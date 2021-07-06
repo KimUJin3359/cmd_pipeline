@@ -48,3 +48,17 @@ char	*ft_strdup(char *str)
 	res[i] = '\0';
 	return (res);
 }
+
+void	initialize_path(t_cmd *cmd, char *en[])
+{
+	int i;
+
+	i = 0;
+	while (en[i])
+	{
+		if (ft_strlen(en[i]) >= 5 && en[i][0] == 'P' && en[i][1] == 'A'
+				&& en[i][2] == 'T' && en[i][3] == 'H' && en[i][4] == '=')
+			cmd->file = ft_split((en[i] + 5), ':');
+		i++;
+	}
+}

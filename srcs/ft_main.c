@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int		main(int ac, char *av[])
+int		main(int ac, char *av[], char *en[])
 {
 	t_cmd	cmd;
 	int		pipe_fd[2];
@@ -14,6 +14,7 @@ int		main(int ac, char *av[])
 
 	if (ac != 5)
 		print_error(2, NULL);
+	initialize_path(&cmd, en);
 	if (pipe(pipe_fd) < 0 || (pid = fork()) < 0)
 		exit(1);
 	if (pid > 0)
